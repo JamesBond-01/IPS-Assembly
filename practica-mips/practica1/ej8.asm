@@ -1,5 +1,5 @@
 .data 0x10000000
-		V: .word 10,20,25,500,3		#Guardo un vector de numeros a partir de la direccion 0x10000000
+		V: .word 10,20,25,500,3		#Guarda un vector de numeros a partir de la direccion 0x10000000
 .text
 main:	lw $s0, V			#Carga el entero 10 en el registro $s0
 		lw $s1, V + 4		#Carga el entero 20 en el registro $s1

@@ -1,5 +1,5 @@
 .data 0x10010002
-		bytesVector: .byte 0x10,0x20,0x30,0x40		#Guardo un vector de bytes a partir de la direccion 0x10000002
+		bytesVector: .byte 0x10,0x20,0x30,0x40		#Guarda un vector de bytes a partir de la direccion 0x10000002
 .align 3							#0x10010008
 		.space 2					#0x10010010
 		palabra: .space 4			#Reserva espacio para una palabra

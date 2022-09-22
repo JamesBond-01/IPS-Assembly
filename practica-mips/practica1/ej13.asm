@@ -1,5 +1,5 @@
 .data 0x10000000
-		enteros: .word 12, -1215	#Guardo un vector de numeros enteros a partir de la direccion 0x10000000
+		enteros: .word 12, -1215	#Guarda un vector de numeros enteros a partir de la direccion 0x10000000
 .text
 main:	lw $t0, enteros				#Carga el numero 12 en el registro $t0
 		lw $t1, enteros + 4			#Carga el numero -1215 en el registro $t1
