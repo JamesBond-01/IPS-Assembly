@@ -33,4 +33,4 @@ main:	lw $t0, num				#Carga el numero 0x1237 en el registro $t0
 		add $t1, $t1, $t0
 		add $t1, $t1, $t0
 		add $t1, $t1, $t0
-		sw $t1,	num + 4		#El resultado se almacena en 0x10000004
+		sw $t1,	num + 4		#Almacena el resultado en 0x10000004
