@@ -1,5 +1,5 @@
 .data 0x10010000
-	matriz_A_fila: .word 1,2,3,4,5,6,7,8,9	#Matriz A almacenada por filas
+	matriz_A_fila: .word 2,4,6,8,10,12,14,16,18	#Matriz A almacenada por filas
 .align 5
 	matriz_A_columna: .space 36				#Espacio para almacenar la Matriz A por columnas
 .text
