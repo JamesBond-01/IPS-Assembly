@@ -46,14 +46,19 @@
 	idObj:	.asciiz "\nIngrese el ID del objeto a eliminar: "
 	objName:.asciiz "\nIngrese el nombre de un objeto: "
 	success:.asciiz "La operación se realizo con exito\n\n"
+	
+	errorCodes:.ascii "ERRORES:\n"
+		  .ascii "201 - No hay categorias para seleccionar\n"
+    		  .ascii "202 - Solo existe una categoria\n"
+    		  .ascii "301 - No hay categorias para listar\n"
+		  .ascii "401 - No hay categorias para borrar\n"
+		  .ascii "501 - No existen categorias para poder anexar objetos\n"
+		  .ascii "601 - No hay categorias creadas\n"
+		  .ascii "602 - No hay objetos para la categoria en curso\n"
+		  .asciiz "701 - No existen categorias para borrar\n"
 
 .text
 main:
-	la $t0, schedv
-	la $a0, menu
-	li $v0, 10
-	syscall
-
 	# initialization scheduler vector
 	la $t0, schedv
 	la $t1, newcaterogy
@@ -72,7 +77,6 @@ main:
 	sw $t1, 24($t0)
 	la $t1, delobject
 	sw $t1, 28($t0)
-	
 main_loop:
 	# show menu
 	jal menu_display
@@ -82,15 +86,15 @@ main_loop:
 	la $t0, schedv
 	add $t0, $t0, $v0
 	lw $t1, ($t0)
-    	la $ra, main_ret 	# save return address
-	jr $t1			# call menu subrutine
+	la $ra, main_ret 	# save return address
+    	jr $t1			# call menu subrutine
+    	
 main_ret:
     j main_loop		
 main_end:
 	done
-
+	
 menu_display:
-	# write your code
 	print_label(menu)
 	read_int
 	# test if invalid option go to L1
@@ -103,8 +107,25 @@ menu_display_L1:
 	print_error(101)
 	j menu_display
 	
-
-newcaterogy:
+isCatEmpty:
+       print_error(201)
+        syscall
+    
+        j main_loop
+        
+singleCat:
+	la $a0, estasAca
+	li $v0, 4            		# Syscall para imprimir String
+       	syscall
+	
+	lw  $a0, 8($t1)       	# Si no esta vacia cargamos el nombre de la categoria actual
+       	li $v0, 4            	# Syscall para imprimir String
+       	syscall
+       	
+ 	print_error(202)
+ 	j main_loop
+		
+newcategory:
 	addiu $sp, $sp, -4
 	sw $ra, 4($sp)
 	la $a0, catName		# input category name
@@ -123,7 +144,23 @@ newcategory_end:
 	jr $ra
 
 nextcategory:
-	# write your code
+	la $a0, wclist
+       	lw $t0, ($a0)	 	# Recupero la cabeza desde wclist y la dejo en t0
+       	beq $t0, $0, isCatEmpty	# Si head es 0 salta a imprimir error lista vacia  
+       	
+       	la $t1, 0($t0)		# Inicializo el registro que recorre la lista: $t1 (puntero)
+       	
+	lw $t1, 12($t1)      	# puntero = puntero -> siguiente;
+	sw $t1, wclist		# actualizo wclist con la "siguiente"
+		
+	beq $t1, $t0, singleCat
+	la $a0, estasAca
+	li $v0, 4            	# Syscall para imprimir String
+       	syscall
+       	lw $a0, 8($t1)       	# Si no esta vacia cargamos el nombre de la categoria siguiente 
+       	li $v0, 4            	# Syscall para imprimir String
+       	syscall
+
 	jr $ra
 
 prevcaterogy:
@@ -231,6 +268,7 @@ smalloc:
 	lw $t0, 12($t0)
 	sw $t0, slist
 	jr $ra
+	
 sbrk:
 	li $a0, 16 # node size fixed 4 words
 	li $v0, 9
