@@ -55,8 +55,8 @@
 	currentCatMsg: .asciiz "Estas en la categoria "	
 	selectedCat: .asciiz "=> "
 	separator: .asciiz " - "
-	myError: .asciiz "La categoria no pudo ser eliminada porque no se encuetra vacia"
-	notFound: .asciiz "El objeto no existe"
+	myError: .asciiz "La categoria no pudo ser eliminada porque no se encuentra vacia\n"
+	notFound: .asciiz "El objeto no existe\n"
 		.text
 main:
 	# initialization scheduler vector
